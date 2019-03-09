@@ -1,0 +1,55 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: react-todo-backend
+  description: API for backend todoist clone. 
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+
+definitions:
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        example: no_stress
+
+paths:
+  /login:
+    post:
+      tags:
+        - Login 
+      description: login into the todo API
+      responses: 
+        200:
+          description: user successfully logged in
+  /signup:
+    post:
+      tags:
+        - SignIn
+      description: sign user into todo app
+      responses:
+        200:
+          description: user created
+      
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
