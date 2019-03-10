@@ -41,8 +41,33 @@ paths:
       tags:
         - SignIn
       description: sign user into todo app
+      consume:
+        - application/json
+      parameters:
+        - in: body 
+          name: user
+          description: The user signing up
+          schema:
+            type: object
+            required:
+              - firstName
+              - lastName
+              - handle
+              - email
+              - password
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+              handle:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
       responses:
-        200:
+        201:
           description: user created
       
 
