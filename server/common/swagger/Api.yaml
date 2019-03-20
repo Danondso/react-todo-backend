@@ -17,15 +17,31 @@ produces:
 
 
 definitions:
-  ExampleBody:
+  User:
     type: object
-    title: example
+    title: user
     required:
-      - name
+      - firstName
+      - lastName
+      - handle
+      - email
+      - password
     properties:
-      name:
+      firstName:
         type: string
-        example: no_stress
+        example: Johnny
+      lastName:
+        type: string
+        example: Test
+      handle:
+        type: string
+        example: TopJohann28
+      email:
+        type: string
+        example: someuser@example.com
+      password:
+        type: string
+        example: testPassword (don't actually use this please)
 
 paths:
   /login:

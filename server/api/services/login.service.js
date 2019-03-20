@@ -1,25 +1,36 @@
 import LoginDatabase from './login.db.service';
 import bcrypt from 'bcryptjs';
+import logger from 'pino';
 ('use strict');
+
+var log = logger();
 
 class LoginService {
   login() {
     return LoginDatabase.getByEmailAndPassword();
   }
 
-  signup(signup) {
-    //TODO setup some sanitation here.
-    if (this.validateSignUp(signup)) {
-      let user = {
-        firstName: signup.firstName,
-        lastName: signup.lastName,
-        handle: signup.handle,
-        email: signup.email,
-        password: this.hashPassword(signup.password),
-      };
-      return Promise.resolve(LoginDatabase.saveUser(user));
+  signup(signupUser) {
+    let userCreatedResult = {
+      result: false,
+      message: '',
+    };
+    if (
+      this.validateEmail(signupUser.email) &&
+      this.validateSignupPayload(signupUser)
+    ) {
+      signupUser.password = this.hashPassword(signupUser.password);
+      let isUserCreated = LoginDatabase.saveUser(signupUser);
+      if (isUserCreated === true) {
+        userCreatedResult.result = true;
+        userCreatedResult.message = 'User created successfully';
+      } else {
+        userCreatedResult.message = 'Unable to create user.';
+      }
+    } else {
+      userCreatedResult.message = 'Validation failed for user signup payload';
     }
-    return Promise.resolve('Your payload was empty dummy');
+    return Promise.resolve(userCreatedResult);
   }
 
   validateEmail(email) {
@@ -27,7 +38,7 @@ class LoginService {
     return re.test(String(email).toLowerCase());
   }
 
-  validateSignUp(signupUser) {
+  validateSignupPayload(signupUser) {
     if (signupUser.firstName === '') return false;
     else if (signupUser.lastName === '') return false;
     else if (signupUser.handle === '') return false;
