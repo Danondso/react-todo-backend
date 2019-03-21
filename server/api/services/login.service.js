@@ -6,8 +6,14 @@ import logger from 'pino';
 var log = logger();
 
 class LoginService {
-  login() {
-    return LoginDatabase.getByEmailAndPassword();
+  login(email, password) {
+    log.info('EMAIL: ', email);
+    let user = LoginDatabase.getByEmail(email);
+    let unhashPassword = this.hashPassword(password);
+    log.info('UNHASHED PASSWORD: ', unhashPassword, 'PASSWORD INPUT: ', String(user.password));
+    if (password === unhashPassword) return Promise.resolve(true);
+
+    return Promise.resolve(false);
   }
 
   signup(signupUser) {
@@ -19,13 +25,11 @@ class LoginService {
       this.validateEmail(signupUser.email) &&
       this.validateSignupPayload(signupUser)
     ) {
+      log.info('Valid userSignup payload received, saving user...');
       signupUser.password = this.hashPassword(signupUser.password);
       let isUserCreated = LoginDatabase.saveUser(signupUser);
       if (isUserCreated === true) {
         userCreatedResult.result = true;
-        userCreatedResult.message = 'User created successfully';
-      } else {
-        userCreatedResult.message = 'Unable to create user.';
       }
     } else {
       userCreatedResult.message = 'Validation failed for user signup payload';
@@ -34,6 +38,7 @@ class LoginService {
   }
 
   validateEmail(email) {
+    log.info('Validating user email: ', email);
     let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
@@ -51,6 +56,10 @@ class LoginService {
     let salt = bcrypt.genSaltSync(12);
     let hash = bcrypt.hashSync(password, salt);
     return hash;
+  }
+
+  unhashPassword() {
+
   }
 }
 

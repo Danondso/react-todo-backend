@@ -2,7 +2,7 @@ import LoginService from '../../services/login.service';
 
 export class Controller {
   login(req, res) {
-    LoginService.login('testuser@gmail.com').then(r => {
+    LoginService.login(req.header('userId'), req.header('password')).then(r => {
       res
         .status(200)
         .json(r)

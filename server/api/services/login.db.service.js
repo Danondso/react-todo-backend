@@ -45,13 +45,17 @@ export class LoginDatabase {
     UserModel = mongoose.model('User', UserSchema);
   }
 
-  getByEmailAndPassword() {
-    return Promise.resolve('Made it to the database');
+  getByEmail(inputEmail) {
+    log.info('LOOKING FOR ', inputEmail);
+    return UserModel.findOne({ email: inputEmail }, function(err) {
+      if (err) throw err;
+    });
   }
 
   saveUser(signUpUser) {
     log.debug('Creating user', signUpUser);
     let user = this.createUser(signUpUser); //TODO log info here
+    log.info('Saving user info for ', user.email);
     return user.save(function(error) {
       if (error) {
         log.error('Error occurred while saving user: ', error);
