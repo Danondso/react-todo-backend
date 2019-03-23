@@ -10,17 +10,18 @@ class LoginService {
     log.info('EMAIL: ', email);
     let user = LoginDatabase.getByEmail(email);
     let unhashPassword = this.hashPassword(password);
-    log.info('UNHASHED PASSWORD: ', unhashPassword, 'PASSWORD INPUT: ', String(user.password));
+    log.info(
+      'UNHASHED PASSWORD: ',
+      unhashPassword,
+      'PASSWORD INPUT: ',
+      String(user.password)
+    );
     if (password === unhashPassword) return Promise.resolve(true);
 
     return Promise.resolve(false);
   }
 
   signup(signupUser) {
-    let userCreatedResult = {
-      result: false,
-      message: '',
-    };
     if (
       this.validateEmail(signupUser.email) &&
       this.validateSignupPayload(signupUser)
@@ -28,13 +29,9 @@ class LoginService {
       log.info('Valid userSignup payload received, saving user...');
       signupUser.password = this.hashPassword(signupUser.password);
       let isUserCreated = LoginDatabase.saveUser(signupUser);
-      if (isUserCreated === true) {
-        userCreatedResult.result = true;
-      }
-    } else {
-      userCreatedResult.message = 'Validation failed for user signup payload';
+      return Promise.resolve(isUserCreated);
     }
-    return Promise.resolve(userCreatedResult);
+    throw 'Validation failed for user signup payload';
   }
 
   validateEmail(email) {
@@ -58,9 +55,7 @@ class LoginService {
     return hash;
   }
 
-  unhashPassword() {
-
-  }
+  unhashPassword() {}
 }
 
 export default new LoginService();

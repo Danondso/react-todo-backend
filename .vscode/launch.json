@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+
         {
             "type": "node",
             "request": "launch",
@@ -11,7 +13,17 @@
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run",
-                "dev:debug"
+                "nyc --reporter=text mocha --require @babel/register test/it-helper.js test/*.it.js --exit"
+            ],
+            "port": 9229
+        },     {
+            "type": "node",
+            "request": "launch",
+            "name": "TEST: Launch via NPM",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "test:debug"
             ],
             "port": 9229
         },
