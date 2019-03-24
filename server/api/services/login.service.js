@@ -8,16 +8,8 @@ var log = logger();
 class LoginService {
   login(email, password) {
     log.info('EMAIL: ', email);
-    let user = LoginDatabase.getByEmail(email);
     let unhashPassword = this.hashPassword(password);
-    log.info(
-      'UNHASHED PASSWORD: ',
-      unhashPassword,
-      'PASSWORD INPUT: ',
-      String(user.password)
-    );
     if (password === unhashPassword) return Promise.resolve(true);
-
     return Promise.resolve(false);
   }
 
@@ -26,12 +18,11 @@ class LoginService {
       this.validateEmail(signupUser.email) &&
       this.validateSignupPayload(signupUser)
     ) {
-      log.info('Valid userSignup payload received, saving user...');
+      log.info('Valid signup payload received, saving user...');
       signupUser.password = this.hashPassword(signupUser.password);
       let isUserCreated = LoginDatabase.saveUser(signupUser);
       return Promise.resolve(isUserCreated);
     }
-    throw 'Validation failed for user signup payload';
   }
 
   validateEmail(email) {

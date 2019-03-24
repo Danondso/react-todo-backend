@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import logger from 'pino';
 ('use strict');
-const url = process.env.MONGO_URL;
 var log = logger();
 
 var UserSchema = new mongoose.Schema({
@@ -37,7 +36,7 @@ var UserSchema = new mongoose.Schema({
 var UserModel;
 export class LoginDatabase {
   constructor() {
-    mongoose.connect(url, {
+    mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useCreateIndex: true,
     });
