@@ -16,22 +16,25 @@ export class LoginController {
         message: 'Body was empty.',
       });
 
-    LoginService.signup(req.body).then(r => {
-      if (r.result === true)
+    LoginService.signup(req.body)
+      .then(r => {
+        if (r === true) res.status(201).end(); //TODO this logic is broken af in here, learn to understand promises. 
+        else
+          res
+            .status(422)
+            .json({
+              message: r,
+            })
+            .end();
+      })
+      .catch(error => {
         res
-          .status(201)
+          .status(500)
           .json({
-            message: r.message,
+            message: error,
           })
           .end();
-      else
-        res
-          .status(422)
-          .json({
-            message: r.message,
-          })
-          .end();
-    });
+      });
   }
 }
 

@@ -55,14 +55,7 @@ export class LoginDatabase {
     log.debug('Creating user', signUpUser);
     let user = this.createUser(signUpUser); //TODO log info here
     log.info('Saving user info for ', user.email);
-    return user.save(function(error) {
-      if (error) {
-        log.error('Error occurred while saving user: ', error);
-        return false;
-      } else {
-        return true;
-      }
-    });
+    return user.save();
   }
 
   createUser(newUser) {

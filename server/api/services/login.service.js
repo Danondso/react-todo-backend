@@ -14,30 +14,36 @@ class LoginService {
   }
 
   signup(signupUser) {
-    if (
-      this.validateEmail(signupUser.email) &&
-      this.validateSignupPayload(signupUser)
-    ) {
-      log.info('Valid signup payload received, saving user...');
+    let result = this.validateSignupPayload(signupUser);
+    if (result === true) {
+      log.info(
+        'Valid signup payload received, saving user...',
+        signupUser.email
+      );
       signupUser.password = this.hashPassword(signupUser.password);
-      let isUserCreated = LoginDatabase.saveUser(signupUser);
-      return Promise.resolve(isUserCreated);
+      return Promise.resolve(LoginDatabase.saveUser(signupUser));
     }
-  }
-
-  validateEmail(email) {
-    log.info('Validating user email: ', email);
-    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    return Promise.resolve(result);
   }
 
   validateSignupPayload(signupUser) {
-    if (signupUser.firstName === '') return false;
-    else if (signupUser.lastName === '') return false;
-    else if (signupUser.handle === '') return false;
-    else if (signupUser.email === '') return false;
-    else if (signupUser.password === '') return false;
+    if (signupUser.firstName === '')
+      return new Error('firstName is a required field.');
+    else if (signupUser.lastName === '')
+      return new Error('lastName is a required field.');
+    else if (signupUser.handle === '')
+      return new Error('handle is a required field.');
+    else if (!this.isValidEmail(signupUser.email) || signupUser.email === '')
+      return new Error('email is invalid.');
+    else if (signupUser.password === '')
+      return new Error('password is a required field.');
     else return true;
+  }
+
+  isValidEmail(email) {
+    log.info('Validating user email: ', email);
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
   hashPassword(password) {
