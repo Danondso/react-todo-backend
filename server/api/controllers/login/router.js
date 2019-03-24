@@ -1,7 +1,7 @@
 import * as express from 'express';
-import controller from './controller';
+import loginController from './login.controller';
 
 export default express
   .Router()
-  .post('/login', controller.login)
-  .post('/signup', controller.signup);
+  .post('/login', loginController.login)
+  .post('/signup', loginController.signup);

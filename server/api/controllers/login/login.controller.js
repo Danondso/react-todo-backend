@@ -1,6 +1,6 @@
 import LoginService from '../../services/login.service';
 
-export class Controller {
+export class LoginController {
   login(req, res) {
     LoginService.login(req.header('userId'), req.header('password')).then(r => {
       res
@@ -35,4 +35,4 @@ export class Controller {
   }
 }
 
-export default new Controller();
+export default new LoginController();
