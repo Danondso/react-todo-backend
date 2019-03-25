@@ -17,15 +17,11 @@ describe('Login controller test', function() {
         })
         .end(function(err, res) {
           if (err) {
-            log.info('HAPPY PATH BODY TEST ', res.body);
-
             log.info(err);
           }
-          log.info('HAPPY PATH BODY TEST ', res.body);
           assert.strictEqual(201, res.status);
         });
       //TODO can I get the payload out of the database to check it here? Would beef the test up way much
-
       //TODO duplicate signup payloads, reject then next one.
     });
 
@@ -57,7 +53,7 @@ describe('Login controller test', function() {
   });
 
   describe('Payload validation tests.', function() {
-    it('Should return 422 when the signup payload is invalid.', () => {
+    it('Should return 422 when no first name is present.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({
@@ -77,7 +73,9 @@ describe('Login controller test', function() {
             res.body.message
           );
         });
+    });
 
+    it('Should return 422 when no last name is present.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({
@@ -94,7 +92,9 @@ describe('Login controller test', function() {
           assert.strictEqual(422, res.status);
           assert.strictEqual('lastName is a required field.', res.body.message);
         });
+    });
 
+    it('Should return 422 when no handle is present.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({
@@ -111,7 +111,9 @@ describe('Login controller test', function() {
           assert.strictEqual(422, res.status);
           assert.strictEqual('handle is a required field.', res.body.message);
         });
+    });
 
+    it('Should return 422 when email is invalid.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({
@@ -128,7 +130,9 @@ describe('Login controller test', function() {
           assert.strictEqual(422, res.status);
           assert.strictEqual('email is invalid.', res.body.message);
         });
+    });
 
+    it('Should return 422 when no email is present.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({
@@ -145,7 +149,9 @@ describe('Login controller test', function() {
           assert.strictEqual(422, res.status);
           assert.strictEqual('email is invalid.', res.body.message);
         });
+    });
 
+    it('Should return 422 when password is present.', () => {
       request(Server)
         .post('/api/v1/signup')
         .send({

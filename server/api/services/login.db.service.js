@@ -55,7 +55,32 @@ export class LoginDatabase {
     log.debug('Creating user', signUpUser);
     let user = this.createUser(signUpUser); //TODO log info here
     log.info('Saving user info for ', user.email);
-    return user.save();
+    return user
+      .save()
+      .then(result => {
+        log.info('User was saved! ', result._id);
+        return result._id;
+      })
+      .catch(error => {
+        log.error('Error occurred while saving a user: ', error);
+        if (error.code == '11000') {
+          if (error.errmsg.includes(signUpUser.email)) {
+            throw new Error(
+              'User with email: ' + user.email + ' already exists.'
+            );
+          } else if (error.errmsg.includes(signUpUser.handle)) {
+            throw new Error(
+              'User with handle: ' + user.handle + ' already exists.'
+            );
+          }
+        }
+
+        throw new Error(
+          'An error occurred while registering user ',
+          signUpUser.email,
+          ' to the database, see logs for details.'
+        );
+      });
   }
 
   createUser(newUser) {
@@ -69,6 +94,4 @@ export class LoginDatabase {
     return createdUser;
   }
 }
-//TODO write some tests for this saving business
-//TODO better handle saving to the database (ie get your promises in order and shit)
 export default new LoginDatabase();

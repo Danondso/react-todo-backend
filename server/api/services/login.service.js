@@ -21,9 +21,18 @@ class LoginService {
         signupUser.email
       );
       signupUser.password = this.hashPassword(signupUser.password);
-      return Promise.resolve(LoginDatabase.saveUser(signupUser));
+      return LoginDatabase.saveUser(signupUser)
+        .then(result => {
+          log.info('User saved successfully, mongo ID: ', result);
+          return 'User saved successfully';
+        })
+        .catch(error => {
+          log.error('ERROR FROM THE DATABASE:', error.message);
+          throw error.message;
+        });
     }
-    return Promise.resolve(result);
+
+    return Promise.reject(result.message);
   }
 
   validateSignupPayload(signupUser) {

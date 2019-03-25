@@ -17,19 +17,17 @@ export class LoginController {
       });
 
     LoginService.signup(req.body)
-      .then(r => {
-        if (r === true) res.status(201).end(); //TODO this logic is broken af in here, learn to understand promises. 
-        else
-          res
-            .status(422)
-            .json({
-              message: r,
-            })
-            .end();
+      .then(success => {
+        res
+          .status(201)
+          .json({
+            message: success,
+          })
+          .end();
       })
       .catch(error => {
         res
-          .status(500)
+          .status(422)
           .json({
             message: error,
           })
