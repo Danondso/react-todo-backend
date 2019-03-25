@@ -44,11 +44,17 @@ export class LoginDatabase {
     UserModel = mongoose.model('User', UserSchema);
   }
 
-  getByEmail(inputEmail) {
+  getUserByEmail(inputEmail) {
     log.info('LOOKING FOR ', inputEmail);
-    return UserModel.findOne({ email: inputEmail }, function(err) {
-      if (err) throw err;
-    });
+    return UserModel.findOne({ email: inputEmail })
+      .then(result => {
+        log.info('Got a result back...', result);
+        return result.password;
+      })
+      .catch(error => {
+        log.error('An error occurred while retrieving user.');
+        throw new Error(error);
+      });
   }
 
   saveUser(signUpUser) {

@@ -8,9 +8,17 @@ var log = logger();
 class LoginService {
   login(email, password) {
     log.info('EMAIL: ', email);
-    let unhashPassword = this.hashPassword(password);
-    if (password === unhashPassword) return Promise.resolve(true);
-    return Promise.resolve(false);
+    LoginDatabase.getUserByEmail(email)
+      .then(result => {
+        log.info('Result from getUserByEmail: ', result);
+        let hashedPass = this.hashPassword(password);
+        log.info(hashedPass);
+        if (this.comparePassword(hashedPass, result));
+        return true; //TODO need to gen a token of some sort for this bit I wager
+      })
+      .catch(error => {
+        throw error;
+      });
   }
 
   signup(signupUser) {
@@ -61,7 +69,9 @@ class LoginService {
     return hash;
   }
 
-  unhashPassword() {}
+  comparePassword(newPassword, userPassword) {
+    return bcrypt.compareSync(newPassword, userPassword);
+  }
 }
 
 export default new LoginService();
