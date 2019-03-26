@@ -1,22 +1,33 @@
 import LoginDatabase from './login.db.service';
 import bcrypt from 'bcryptjs';
 import logger from 'pino';
+import jsonwebtoken from 'jsonwebtoken';
 ('use strict');
 
 var log = logger();
-
+var secretKey = 'cfc6d215-723c-431d-a254-64bcaa48b320'; //TODO move this to it's own config
 class LoginService {
   login(email, password) {
     log.info('EMAIL: ', email);
-    LoginDatabase.getUserByEmail(email)
+    return LoginDatabase.getUserByEmail(email)
       .then(result => {
         log.info('Result from getUserByEmail: ', result);
         let hashedPass = this.hashPassword(password);
         log.info(hashedPass);
-        if (this.comparePassword(hashedPass, result));
-        return true; //TODO need to gen a token of some sort for this bit I wager
+        if (this.comparePassword(hashedPass, result) === true) {
+          let claims = {
+            iss: 'dublins-node-ws',
+            user: email,
+          };
+          return jsonwebtoken.sign(claims, secretKey);
+        }
+        // sign with RSA SHA256
+        // var privateKey = fs.readFileSync('private.key');
+        //var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
+        //TODO need to gen a token of some sort for this bit I wager
       })
       .catch(error => {
+        log.error('I am about to throw;');
         throw error;
       });
   }
@@ -70,7 +81,7 @@ class LoginService {
   }
 
   comparePassword(newPassword, userPassword) {
-    return bcrypt.compareSync(newPassword, userPassword);
+    return bcrypt.compare(newPassword, userPassword);
   }
 }
 

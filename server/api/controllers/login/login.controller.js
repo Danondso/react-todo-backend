@@ -2,12 +2,21 @@ import LoginService from '../../services/login.service';
 
 export class LoginController {
   login(req, res) {
-    LoginService.login(req.header('userId'), req.header('password')).then(r => {
-      res
-        .status(200)
-        .json(r)
-        .end();
-    });
+    LoginService.login(req.header('userId'), req.header('password'))
+      .then(r => {
+        res
+          .status(200)
+          .header('user-token', r)
+          .end();
+      })
+      .catch(error => {
+        res
+          .status(403)
+          .json({
+            message: error,
+          })
+          .end();
+      });
   }
 
   signup(req, res) {
