@@ -11,23 +11,23 @@ class LoginService {
     log.info('EMAIL: ', email);
     return LoginDatabase.getUserByEmail(email)
       .then(result => {
-        log.info('Result from getUserByEmail: ', result);
-        let hashedPass = this.hashPassword(password);
-        log.info(hashedPass);
-        if (this.comparePassword(hashedPass, result) === true) {
+        log.debug('Result from getUserByEmail: ', result);
+        let hashedPass = bcrypt.hashSync(password, result.salt);
+        if (this.comparePassword(hashedPass, result.password)) {
+          log.info('Generating jwt token for ', email);
           let claims = {
             iss: 'dublins-node-ws',
-            user: email,
+            firstName: result.firstName,
+            lastName: result.lastName,
+            handle: result.handle,
+            email: email,
           };
-          return jsonwebtoken.sign(claims, secretKey);
+          return jsonwebtoken.sign(claims, secretKey); //'RS256 algorithm doesn't appear to work for some reason...
+        } else {
+          return 'Password was invalid for user: ', email;
         }
-        // sign with RSA SHA256
-        // var privateKey = fs.readFileSync('private.key');
-        //var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
-        //TODO need to gen a token of some sort for this bit I wager
       })
       .catch(error => {
-        log.error('I am about to throw;');
         throw error;
       });
   }
@@ -39,7 +39,10 @@ class LoginService {
         'Valid signup payload received, saving user...',
         signupUser.email
       );
-      signupUser.password = this.hashPassword(signupUser.password);
+      let salt = bcrypt.genSaltSync(12);
+      let hashedPassword = bcrypt.hashSync(signupUser.password, salt);
+      signupUser.salt = salt;
+      signupUser.password = hashedPassword;
       return LoginDatabase.saveUser(signupUser)
         .then(result => {
           log.info('User saved successfully, mongo ID: ', result);
@@ -72,12 +75,6 @@ class LoginService {
     log.info('Validating user email: ', email);
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
-  }
-
-  hashPassword(password) {
-    let salt = bcrypt.genSaltSync(12);
-    let hash = bcrypt.hashSync(password, salt);
-    return hash;
   }
 
   comparePassword(newPassword, userPassword) {

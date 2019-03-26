@@ -31,6 +31,11 @@ var UserSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  salt: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 });
 
 var UserModel;
@@ -45,11 +50,11 @@ export class LoginDatabase {
   }
 
   getUserByEmail(inputEmail) {
-    log.info('LOOKING FOR ', inputEmail);
+    log.info('Retrieving user info for email: ', inputEmail);
     return UserModel.findOne({ email: inputEmail })
       .then(result => {
-        log.info('Got a result back...', result);
-        return result.password;
+        log.debug('Got a result back...', result);
+        return result;
       })
       .catch(error => {
         log.error('An error occurred while retrieving user.');
@@ -96,6 +101,7 @@ export class LoginDatabase {
     createdUser.handle = newUser.handle;
     createdUser.email = newUser.email;
     createdUser.password = newUser.password;
+    createdUser.salt = newUser.salt;
 
     return createdUser;
   }
