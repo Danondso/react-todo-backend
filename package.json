@@ -21,7 +21,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.19",
-    "nyc": "^13.3.0",
+    "nyc": "^14.0.0",
     "pino": "^5.11.3",
     "swagger-express-middleware": "^2.0.2"
   },
@@ -37,7 +37,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "mocha-prepare": "^0.1.0",
     "mongodb-memory-server": "^4.2.1",
     "nodemon": "^1.18.10",
