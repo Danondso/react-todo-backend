@@ -85,14 +85,36 @@ paths:
       responses:
         201:
           description: user created
-  /saveTask:
+  /task:
     post:
       tags:
         - Task
       description: save task
       consume:
         - application/json
-      
+      parameters:
+        - in: body 
+          name: task
+          description: The task to be saved
+          schema:
+            type: object
+            required:
+              - email
+              - text
+            properties:
+              project:
+                type: string
+              id:
+                type: string
+              text:
+                type: string
+              email:
+                type: string
+              created:
+                type: string
+      responses:
+        201:
+          description: user created
 
   /spec:
     get:

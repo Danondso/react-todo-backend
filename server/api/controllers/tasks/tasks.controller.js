@@ -7,7 +7,7 @@ export class TasksController {
         message: 'Body was empty.',
       });
 
-    TaskService.saveTask()
+    TaskService.saveTask(req.body)
       .then(result => {
         return res
           .status(200)
