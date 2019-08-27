@@ -1,75 +1,13 @@
 import mongoose from 'mongoose';
 import logger from 'pino';
+import UserSchema from './schemas/task.schema';
+import TaskSchema from './schemas/user.schema';
 ('use strict');
 var log = logger();
 
-const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  handle: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  salt: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-});
-
-const TaskSchema = new mongoose.Schema({
-  project: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  id: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  text: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  createdTime: {
-    type: Date,
-    required: true,
-    trim: true,
-  },
-});
-
 var UserModel;
 var TaskModel;
-export class LoginDatabase {
+export class DoerRepository {
   constructor() {
     mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
       useNewUrlParser: true,
@@ -81,8 +19,9 @@ export class LoginDatabase {
   }
 
   insertTask(newTask) {
-    log.info('Inserting task');
+    log.info('Inserting task', newTask);
     let task = this.createTask(newTask);
+    log.info('Saving task', task);
     return task
       .save()
       .then(result => {
@@ -90,6 +29,7 @@ export class LoginDatabase {
         return result._id;
       })
       .catch(error => {
+        log.info('DID WE MAKE IT HERE?', error);
         throw new Error('Unable to save task ', error);
       });
   }
@@ -146,7 +86,7 @@ export class LoginDatabase {
     createdTask.email = newTask.email;
     createdTask.text = newTask.text;
     createdTask.createdTime = new Date();
-    return newTask;
+    return createdTask;
   }
 
   createUser(newUser) {
@@ -161,4 +101,4 @@ export class LoginDatabase {
     return createdUser;
   }
 }
-export default new LoginDatabase();
+export default new DoerRepository();

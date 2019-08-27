@@ -1,4 +1,4 @@
-import LoginDatabase from './login.db.service';
+import DoerRepository from './login.db.service';
 import bcrypt from 'bcryptjs';
 import logger from 'pino';
 import jsonwebtoken from 'jsonwebtoken';
@@ -9,7 +9,7 @@ var secretKey = 'cfc6d215-723c-431d-a254-64bcaa48b320'; //TODO move this to it's
 class LoginService {
   login(email, password) {
     log.info('EMAIL: ', email);
-    return LoginDatabase.getUserByEmail(email)
+    return DoerRepository.getUserByEmail(email)
       .then(result => {
         log.debug('Result from getUserByEmail: ', result);
         let hashedPass = bcrypt.hashSync(password, result.salt);
@@ -43,7 +43,7 @@ class LoginService {
       let hashedPassword = bcrypt.hashSync(signupUser.password, salt);
       signupUser.salt = salt;
       signupUser.password = hashedPassword;
-      return LoginDatabase.saveUser(signupUser)
+      return DoerRepository.saveUser(signupUser)
         .then(result => {
           log.info('User saved successfully, mongo ID: ', result);
           return 'User saved successfully';
