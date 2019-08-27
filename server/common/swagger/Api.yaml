@@ -85,6 +85,13 @@ paths:
       responses:
         201:
           description: user created
+  /saveTask:
+    post:
+      tags:
+        - Task
+      description: save task
+      consume:
+        - application/json
       
 
   /spec:

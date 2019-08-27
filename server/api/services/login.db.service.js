@@ -3,7 +3,7 @@ import logger from 'pino';
 ('use strict');
 var log = logger();
 
-var UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -38,15 +38,60 @@ var UserSchema = new mongoose.Schema({
   },
 });
 
+const TaskSchema = new mongoose.Schema({
+  project: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  id: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  text: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  createdTime: {
+    type: Date,
+    required: true,
+    trim: true,
+  },
+});
+
 var UserModel;
+var TaskModel;
 export class LoginDatabase {
   constructor() {
-    mongoose.connect(process.env.MONGO_URL, {
+    mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
       useNewUrlParser: true,
       useCreateIndex: true,
     });
     mongoose.Promise = global.Promise; //Why set this up?
     UserModel = mongoose.model('User', UserSchema);
+    TaskModel = mongoose.model('Task', TaskSchema);
+  }
+
+  insertTask(newTask) {
+    log.info('Inserting task');
+    let task = this.createTask(newTask);
+    return task
+      .save()
+      .then(result => {
+        log.info('Task inserted');
+        return result._id;
+      })
+      .catch(error => {
+        throw new Error('Unable to save task ', error);
+      });
   }
 
   getUserByEmail(inputEmail) {
@@ -92,6 +137,16 @@ export class LoginDatabase {
           ' to the database, see logs for details.'
         );
       });
+  }
+
+  createTask(newTask) {
+    let createdTask = new TaskModel();
+    createdTask.project = newTask.project;
+    createdTask.id = newTask.id;
+    createdTask.email = newTask.email;
+    createdTask.text = newTask.text;
+    createdTask.createdTime = new Date();
+    return newTask;
   }
 
   createUser(newUser) {
