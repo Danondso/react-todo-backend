@@ -1,56 +1,22 @@
-swagger: "2.0"
+openapi: 3.0.2
 info:
   version: 1.0.0
   title: react-todo-backend
-  description: API for backend todoist clone. 
+  description: API for backend todoist clone.
 basePath: /api/v1
 tags:
   - name: Examples
     description: Simple example endpoints
   - name: Specification
     description: The swagger API specification
-
-consumes:
-  - application/json
-produces:
-  - application/json
-
-
-definitions:
-  User:
-    type: object
-    title: user
-    required:
-      - firstName
-      - lastName
-      - handle
-      - email
-      - password
-    properties:
-      firstName:
-        type: string
-        example: Johnny
-      lastName:
-        type: string
-        example: Test
-      handle:
-        type: string
-        example: TopJohann28
-      email:
-        type: string
-        example: someuser@example.com
-      password:
-        type: string
-        example: testPassword (don't actually use this please)
-
 paths:
   /login:
     post:
       tags:
-        - Login 
+        - Login
       description: login into the todo API
-      responses: 
-        200:
+      responses:
+        "200":
           description: user successfully logged in
   /signup:
     post:
@@ -59,31 +25,31 @@ paths:
       description: sign user into todo app
       consume:
         - application/json
-      parameters:
-        - in: body 
-          name: user
-          description: The user signing up
-          schema:
-            type: object
-            required:
-              - firstName
-              - lastName
-              - handle
-              - email
-              - password
-            properties:
-              firstName:
-                type: string
-              lastName:
-                type: string
-              handle:
-                type: string
-              email:
-                type: string
-              password:
-                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - lastName
+                - handle
+                - email
+                - password
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                handle:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+        description: The user signing up
       responses:
-        201:
+        "201":
           description: user created
   /task:
     post:
@@ -92,34 +58,62 @@ paths:
       description: save task
       consume:
         - application/json
-      parameters:
-        - in: body 
-          name: task
-          description: The task to be saved
-          schema:
-            type: object
-            required:
-              - email
-              - text
-            properties:
-              project:
-                type: string
-              id:
-                type: string
-              text:
-                type: string
-              email:
-                type: string
-              created:
-                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - text
+              properties:
+                project:
+                  type: string
+                id:
+                  type: string
+                text:
+                  type: string
+                email:
+                  type: string
+                created:
+                  type: string
+        description: The task to be saved
       responses:
-        201:
+        "201":
           description: user created
-
   /spec:
     get:
       tags:
         - Specification
       responses:
-        200:
+        "200":
           description: Return the API specification
+servers:
+  - url: /api/v1
+components:
+  schemas:
+    User:
+      type: object
+      title: user
+      required:
+        - firstName
+        - lastName
+        - handle
+        - email
+        - password
+      properties:
+        firstName:
+          type: string
+          example: Johnny
+        lastName:
+          type: string
+          example: Test
+        handle:
+          type: string
+          example: TopJohann28
+        email:
+          type: string
+          example: someuser@example.com
+        password:
+          type: string
+          example: testPassword (don't actually use this please)
