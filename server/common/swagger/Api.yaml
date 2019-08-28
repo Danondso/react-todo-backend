@@ -117,3 +117,26 @@ components:
         password:
           type: string
           example: testPassword (don't actually use this please)
+    Task:
+      type: object
+      title: task
+      required:
+        - id
+        - text
+        - email
+      properties:
+        project:
+          type: string
+          example: Chore
+        id:
+          type: string
+          example: 00112233-4455-6677-8899-aabbccddeeff
+        email:
+          type: string
+          example: someuser@example.com
+        text:
+          type: string
+          example: Wash the dishes
+        createdTime:
+          type: string
+          example: 12/06/1992T01:01:01
