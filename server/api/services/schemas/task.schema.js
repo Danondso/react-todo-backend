@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-var TaskSchema = new mongoose.Schema(
+let TaskSchema = new mongoose.Schema(
   {
     project: {
       type: String,
@@ -26,4 +26,6 @@ var TaskSchema = new mongoose.Schema(
   { collection: 'tasks' }
 );
 
-export default TaskSchema;
+const TaskModel = mongoose.model('Task', TaskSchema);
+
+export default TaskModel;

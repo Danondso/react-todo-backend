@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
 import logger from 'pino';
-import UserSchema from './schemas/task.schema';
-import TaskSchema from './schemas/user.schema';
+import UserModel from './schemas/user.schema';
+import TaskModel from './schemas/task.schema';
 ('use strict');
 var log = logger();
 
-var UserModel;
-var TaskModel;
 export class DoerRepository {
   constructor() {
     mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
@@ -14,8 +12,6 @@ export class DoerRepository {
       useCreateIndex: true,
     });
     mongoose.Promise = global.Promise; //Why set this up?
-    UserModel = mongoose.model('User', TaskSchema);
-    TaskModel = mongoose.model('Task', UserSchema);
   }
 
   insertTask(newTask) {

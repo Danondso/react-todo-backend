@@ -38,4 +38,6 @@ var UserSchema = new mongoose.Schema(
   { collection: 'users' }
 );
 
-export default UserSchema;
+const UserModel = mongoose.model('User', UserSchema);
+
+export default UserModel;
