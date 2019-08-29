@@ -42,6 +42,22 @@ definitions:
       password:
         type: string
         example: testPassword (don't actually use this please)
+  Task:
+    type: object
+    title: task
+    required:
+      - email
+      - text
+    properties:
+      project:
+        type: string
+        example: Chores
+      email:
+        type: string
+        example: sample.user@something.com
+      text:
+        type: string
+        example: Do dishes. 
 
 paths:
   /login:
@@ -104,13 +120,9 @@ paths:
             properties:
               project:
                 type: string
-              id:
-                type: string
               text:
                 type: string
               email:
-                type: string
-              created:
                 type: string
       responses:
         201:

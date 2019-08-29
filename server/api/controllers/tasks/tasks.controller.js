@@ -12,7 +12,7 @@ export class TasksController {
         return res
           .status(200)
           .json({
-            message: result,
+            data: result,
           })
           .end();
       })

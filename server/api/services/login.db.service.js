@@ -14,8 +14,8 @@ export class DoerRepository {
       useCreateIndex: true,
     });
     mongoose.Promise = global.Promise; //Why set this up?
-    UserModel = mongoose.model('User', UserSchema);
-    TaskModel = mongoose.model('Task', TaskSchema);
+    UserModel = mongoose.model('User', TaskSchema);
+    TaskModel = mongoose.model('Task', UserSchema);
   }
 
   insertTask(newTask) {
@@ -26,7 +26,7 @@ export class DoerRepository {
       .save()
       .then(result => {
         log.info('Task inserted');
-        return result._id;
+        return result;
       })
       .catch(error => {
         log.info('DID WE MAKE IT HERE?', error);
@@ -82,7 +82,7 @@ export class DoerRepository {
   createTask(newTask) {
     let createdTask = new TaskModel();
     createdTask.project = newTask.project;
-    createdTask.id = newTask.id;
+    createdTask.id = mongoose.Types.ObjectId();
     createdTask.email = newTask.email;
     createdTask.text = newTask.text;
     createdTask.createdTime = new Date();

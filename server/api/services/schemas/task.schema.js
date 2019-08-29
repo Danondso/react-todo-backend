@@ -7,12 +7,6 @@ var TaskSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
-    id: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,

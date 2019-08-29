@@ -9,11 +9,21 @@ class TaskService {
     return DoerRepository.insertTask(newTask)
       .then(result => {
         log.info('result ', result);
-        return result;
+        return this.convertTaskToDto(result);
       })
       .catch(err => {
         throw new Error(err);
       });
+  }
+  convertTaskToDto(result) {
+    let taskData = {
+      project: result.project,
+      id: result._id,
+      email: result.email,
+      text: result.text,
+      createdTime: result.createdTime,
+    };
+    return taskData;
   }
 }
 
