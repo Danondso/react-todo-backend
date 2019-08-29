@@ -9,49 +9,6 @@
             "request": "attach",
             "name": "Attach by Process ID",
             "processId": "${command:PickProcess}"
-        },
-    
-        
-        
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch via NPM",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run",
-                "nyc --reporter=text mocha --require @babel/register test/it-helper.js test/*.it.js --exit"
-            ],
-            "port": 9229
-        },     {
-            "type": "node",
-            "request": "launch",
-            "name": "TEST: Launch via NPM",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run",
-                "test:debug"
-            ],
-            "port": 9229
-        },
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/server/index.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Debug",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run",
-                "debug"
-            ],
-            "port": 3000
         }
     ]
 }
