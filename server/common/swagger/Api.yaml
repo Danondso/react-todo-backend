@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: react-todo-backend
+  title: doer-backend
   description: API for backend todoist clone. 
 basePath: /api/v1
 tags:
@@ -73,31 +73,13 @@ paths:
       tags:
         - SignIn
       description: sign user into todo app
-      consume:
-        - application/json
+
       parameters:
         - in: body 
           name: user
           description: The user signing up
           schema:
-            type: object
-            required:
-              - firstName
-              - lastName
-              - handle
-              - email
-              - password
-            properties:
-              firstName:
-                type: string
-              lastName:
-                type: string
-              handle:
-                type: string
-              email:
-                type: string
-              password:
-                type: string
+            $ref: '#/definitions/User'
       responses:
         201:
           description: user created
@@ -106,30 +88,22 @@ paths:
       tags:
         - Task
       description: save task
-      consume:
-        - application/json
       parameters:
         - in: body 
           name: task
           description: The task to be saved
           schema:
-            type: object
-            required:
-              - email
-              - text
-            properties:
-              project:
-                type: string
-              text:
-                type: string
-              email:
-                type: string
+            $ref: '#/definitions/Task'
+      responses:
+        200:
+          description: posted task returned. 
   /task/{id}:
     parameters:
     - in: path
       name: id
       description: id of task.
       required: true
+      type: string
     delete:
       tags:
         - Task
@@ -142,21 +116,14 @@ paths:
       parameters:
         - in: path
           name: id
+          required: true
+          type: string
         - in: body 
           name: task
           description: The task to be saved
+          required: true
           schema:
-            type: object
-            required:
-              - email
-              - text
-            properties:
-              project:
-                type: string
-              text:
-                type: string
-              email:
-                type: string
+            $ref: '#/definitions/Task'
       responses:
         204:
           description: Task updated. 
