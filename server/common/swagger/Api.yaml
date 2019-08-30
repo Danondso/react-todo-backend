@@ -112,12 +112,8 @@ paths:
         204:
           description: Task deleted.    
     put:
-      description: save task
+      description: Update data store task. 
       parameters:
-        - in: path
-          name: id
-          required: true
-          type: string
         - in: body 
           name: task
           description: The task to be saved

@@ -41,7 +41,7 @@ export class TasksController {
   }
 
   deleteTask(req, res) {
-    console.log("HELLLOOOO")
+    console.log(req.params.id);
     TaskService.deleteTask()
       .then(() => {
         return res.status(204).end();
