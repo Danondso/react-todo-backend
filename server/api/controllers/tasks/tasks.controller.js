@@ -22,6 +22,36 @@ export class TasksController {
         });
       });
   }
+
+  updateTask(req, res) {
+    if (req.body == null || Object.keys(req.body).length === 0)
+      return res.status(400).json({
+        message: 'Body was empty.',
+      });
+
+    TaskService.updateTask(req.body)
+      .then(() => {
+        return res.status(204).end();
+      })
+      .catch(error => {
+        return res.status(500).json({
+          message: error,
+        });
+      });
+  }
+
+  deleteTask(req, res) {
+    console.log("HELLLOOOO")
+    TaskService.deleteTask()
+      .then(() => {
+        return res.status(204).end();
+      })
+      .catch(error => {
+        return res.status(500).json({
+          message: error,
+        });
+      });
+  }
 }
 
 export default new TasksController();

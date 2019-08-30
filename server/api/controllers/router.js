@@ -6,4 +6,6 @@ export default express
   .Router()
   .post('/login', loginController.login)
   .post('/signup', loginController.signup)
-  .post('/task', taskController.saveTask);
+  .post('/task', taskController.saveTask)
+  .put('/task/{id}', taskController.updateTask)
+  .delete('/task/{id}', taskController.deleteTask);

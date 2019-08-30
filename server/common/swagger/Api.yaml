@@ -124,10 +124,42 @@ paths:
                 type: string
               email:
                 type: string
+  /task/{id}:
+    parameters:
+    - in: path
+      name: id
+      description: id of task.
+      required: true
+    delete:
+      tags:
+        - Task
+      description: Deletes task from data store. 
       responses:
-        201:
-          description: user created
-
+        204:
+          description: Task deleted.    
+    put:
+      description: save task
+      parameters:
+        - in: path
+          name: id
+        - in: body 
+          name: task
+          description: The task to be saved
+          schema:
+            type: object
+            required:
+              - email
+              - text
+            properties:
+              project:
+                type: string
+              text:
+                type: string
+              email:
+                type: string
+      responses:
+        204:
+          description: Task updated. 
   /spec:
     get:
       tags:

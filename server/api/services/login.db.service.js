@@ -30,6 +30,31 @@ export class DoerRepository {
       });
   }
 
+  updateTask(updatedTask, id) {
+    let task = TaskModel.findById(id);
+
+    task.project = updatedTask.project;
+    task.text = updatedTask.text;
+    return task
+      .save()
+      .then(() => {
+        return;
+      })
+      .catch(error => {
+        return error;
+      });
+  }
+
+  deleteTask(id) {
+    return TaskModel.deleteOne({ _id: id })
+      .then(() => {
+        return;
+      })
+      .catch(error => {
+        throw new Error(error);
+      });
+  }
+
   getUserByEmail(inputEmail) {
     log.info('Retrieving user info for email: ', inputEmail);
     return UserModel.findOne({ email: inputEmail })
