@@ -16,9 +16,25 @@ class TaskService {
       });
   }
 
-  updateTask(updatedTask) {
+  getTasks(email) {
+    log.info('Retrieving tasks for email: ', email);
+    return DoerRepository.findTasksByEmail(email)
+      .then(results => {
+        let resultsList = [];
+        results.forEach(result => {
+          resultsList.push(this.convertTaskToDto(result));
+        });
+        return resultsList;
+      })
+      .catch(error => {
+        log.info(error);
+        throw new Error(error);
+      });
+  }
+
+  updateTask(id, updatedTask) {
     log.info('Updating task with id: ', updatedTask.id);
-    return DoerRepository.updateTask(updatedTask)
+    return DoerRepository.updateTask(id, updatedTask)
       .then(result => {
         return result;
       })
@@ -34,7 +50,8 @@ class TaskService {
         return;
       })
       .catch(error => {
-        throw new Error(error);
+        log.info('Error occurred while deleting task with id ', id, '.');
+        return error;
       });
   }
 

@@ -30,9 +30,19 @@ export class DoerRepository {
       });
   }
 
-  updateTask(updatedTask, id) {
-    let task = TaskModel.findById(id);
+  findTasksByEmail(email) {
+    return TaskModel.find({ email: email })
+      .then(result => {
+        return result;
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+  }
 
+  updateTask(id, updatedTask) {
+    log.info('Found task', id);
+    let task = TaskModel.findById(id);
     task.project = updatedTask.project;
     task.text = updatedTask.text;
     return task
@@ -47,11 +57,14 @@ export class DoerRepository {
 
   deleteTask(id) {
     return TaskModel.deleteOne({ _id: id })
-      .then(() => {
+      .then(result => {
+        log.info('Task with id', id, 'successfully deleted.');
+        log.debug('Result: ', result);
         return;
       })
       .catch(error => {
-        throw new Error(error);
+        log.error('An error occurred while deleting task.', error);
+        return error;
       });
   }
 
@@ -59,11 +72,12 @@ export class DoerRepository {
     log.info('Retrieving user info for email: ', inputEmail);
     return UserModel.findOne({ email: inputEmail })
       .then(result => {
-        log.debug('Got a result back...', result);
+        log.info('Successfully retrieved user info for email', inputEmail);
+        log.debug('Result:', result);
         return result;
       })
       .catch(error => {
-        log.error('An error occurred while retrieving user.');
+        log.error('An error occurred while retrieving user.', error);
         throw new Error(error);
       });
   }

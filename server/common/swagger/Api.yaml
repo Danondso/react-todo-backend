@@ -96,7 +96,13 @@ paths:
             $ref: '#/definitions/Task'
       responses:
         200:
-          description: posted task returned. 
+          description: Sucessfully posted task. 
+          schema:
+            $ref: '#/definitions/Task'
+        400:
+          description: Task body was empty.
+        500:
+          description: Error occured while posting data. 
   /task/{id}:
     parameters:
     - in: path
@@ -112,6 +118,8 @@ paths:
         204:
           description: Task deleted.    
     put:
+      tags:
+        - Task
       description: Update data store task. 
       parameters:
         - in: body 
@@ -122,7 +130,20 @@ paths:
             $ref: '#/definitions/Task'
       responses:
         204:
-          description: Task updated. 
+          description: Task updated.
+  /{email}/tasks:
+    parameters:
+      - in: path
+        name: email
+        description: Email of user whose tasks are to be retrieved.
+        required: true
+        type: string
+    get:
+      tags:
+        - Tasks
+      responses:
+        200:
+          description: OK
   /spec:
     get:
       tags:
