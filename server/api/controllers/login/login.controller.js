@@ -1,4 +1,4 @@
-import LoginService from '../../services/login.service';
+import LoginService from './login.service';
 
 export class LoginController {
   login(req, res) {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import logger from 'pino';
-import UserModel from './schemas/user.schema';
-import TaskModel from './schemas/task.schema';
+import UserModel from '../controllers/login/user.schema';
+import TaskModel from '../controllers/tasks/task.schema';
 ('use strict');
 var log = logger();
 

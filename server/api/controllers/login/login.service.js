@@ -1,4 +1,4 @@
-import DoerRepository from './login.db.service';
+import DoerRepository from '../../services/db.service';
 import bcrypt from 'bcryptjs';
 import logger from 'pino';
 import jsonwebtoken from 'jsonwebtoken';

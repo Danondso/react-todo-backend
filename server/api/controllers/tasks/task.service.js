@@ -1,4 +1,4 @@
-import DoerRepository from './login.db.service';
+import DoerRepository from '../../services/db.service';
 import logger from 'pino';
 
 var log = logger();
