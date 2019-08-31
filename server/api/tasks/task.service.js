@@ -36,7 +36,8 @@ class TaskService {
     log.info('Updating task with id: ', updatedTask.id);
     return DoerRepository.updateTask(id, updatedTask)
       .then(result => {
-        return result;
+        log.debug('Result from updating task', result);
+        return;
       })
       .catch(err => {
         throw new Error(err);

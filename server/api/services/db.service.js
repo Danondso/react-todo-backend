@@ -25,8 +25,7 @@ export class DoerRepository {
         return result;
       })
       .catch(error => {
-        log.info('DID WE MAKE IT HERE?', error);
-        throw new Error('Unable to save task ', error);
+        throw new Error('Unable to save task', error);
       });
   }
 
@@ -41,18 +40,21 @@ export class DoerRepository {
   }
 
   updateTask(id, updatedTask) {
-    log.info('Found task', id);
-    let task = TaskModel.findById(id);
-    task.project = updatedTask.project;
-    task.text = updatedTask.text;
-    return task
-      .save()
-      .then(() => {
-        return;
-      })
-      .catch(error => {
-        return error;
-      });
+    log.info('Found task to update', id);
+    return Promise.resolve(
+      TaskModel.findById(id)
+        .then(result => {
+          result.project = updatedTask.project;
+          result.text = updatedTask.text;
+
+          return result.save().then(result => {
+            return result._doc;
+          });
+        })
+        .catch(error => {
+          throw new Error(error);
+        })
+    );
   }
 
   deleteTask(id) {
