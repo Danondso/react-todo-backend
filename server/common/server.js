@@ -22,6 +22,11 @@ export default class ExpressServer {
     );
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(Express.static(`${root}/public`));
+    app.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', 'localhost'); // update to match the domain you will make the request from
+      res.header('Access-Control-Allow-Methods', 'POST, PUT, DELETE');
+      next();
+    });
   }
 
   router(routes) {
