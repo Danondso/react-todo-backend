@@ -5,7 +5,6 @@ import jsonwebtoken from 'jsonwebtoken';
 ('use strict');
 
 var log = logger();
-var secretKey = 'cfc6d215-723c-431d-a254-64bcaa48b320'; //TODO move this to it's own config
 class LoginService {
   login(email, password) {
     log.info('EMAIL: ', email);
@@ -22,7 +21,7 @@ class LoginService {
             handle: result.handle,
             email: email,
           };
-          return jsonwebtoken.sign(claims, secretKey); //'RS256 algorithm doesn't appear to work for some reason...
+          return jsonwebtoken.sign(claims, process.env.SECRET_KEY); //'RS256 algorithm doesn't appear to work for some reason...
         } else {
           return 'Password was invalid for user: ', email;
         }
