@@ -15,6 +15,9 @@ consumes:
 produces:
   - application/json
 
+securityDefinitions:
+  BasicAuth: 
+    type: basic
 
 definitions:
   User:
@@ -65,6 +68,8 @@ paths:
       tags:
         - Login 
       description: login into the todo API
+      security:
+        - BasicAuth: []
       responses: 
         200:
           description: user successfully logged in
