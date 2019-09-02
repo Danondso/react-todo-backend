@@ -18,6 +18,8 @@ produces:
 securityDefinitions:
   BasicAuth: 
     type: basic
+  Bearer:
+    type: bearer
 
 definitions:
   User:

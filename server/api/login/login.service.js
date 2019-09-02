@@ -7,7 +7,7 @@ import jsonwebtoken from 'jsonwebtoken';
 var log = logger();
 class LoginService {
   login(email, password) {
-    log.info('EMAIL: ', email);
+    log.info('EMAIL:', email);
     return DoerRepository.getUserByEmail(email)
       .then(result => {
         log.debug('Result from getUserByEmail: ', result);
