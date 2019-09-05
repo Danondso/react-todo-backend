@@ -18,8 +18,6 @@ produces:
 securityDefinitions:
   BasicAuth: 
     type: basic
-  Bearer:
-    type: bearer
 
 definitions:
   User:
@@ -47,6 +45,32 @@ definitions:
       password:
         type: string
         example: testPassword (don't actually use this please)
+  Login:
+    type: object
+    title: login
+    required:
+      - firstName
+      - lastName
+      - handle
+      - email
+      - token
+    properties:
+      firstName:
+        type: string
+        example: Johnny
+      lastName:
+        type: string
+        example: Test
+      handle:
+        type: string
+        example: TopJohann28
+      email:
+        type: string
+        example: someuser@example.com
+      token:
+        type: string
+        example: JWT token
+        description: JWT token
   Task:
     type: object
     title: task
@@ -75,6 +99,8 @@ paths:
       responses: 
         200:
           description: user successfully logged in
+          schema:
+            $ref: '#/definitions/Login'
   /signup:
     post:
       tags:
@@ -88,8 +114,10 @@ paths:
           schema:
             $ref: '#/definitions/User'
       responses:
-        201:
-          description: user created
+        200:
+          description: user signed up
+          schema:
+            $ref: '#/definitions/Login'
   /task:
     post:
       tags:

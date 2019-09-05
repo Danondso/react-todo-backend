@@ -14,14 +14,7 @@ class LoginService {
         let hashedPass = bcrypt.hashSync(password, result.salt);
         if (this.comparePassword(hashedPass, result.password)) {
           log.info('Generating jwt token for ', email);
-          let claims = {
-            iss: 'dublins-node-ws',
-            firstName: result.firstName,
-            lastName: result.lastName,
-            handle: result.handle,
-            email: email,
-          };
-          return jsonwebtoken.sign(claims, process.env.SECRET_KEY); //'RS256 algorithm doesn't appear to work for some reason...
+          return this.generateLoginPayload(email, result);
         } else {
           return 'Password was invalid for user: ', email;
         }
@@ -45,7 +38,7 @@ class LoginService {
       return DoerRepository.saveUser(signupUser)
         .then(result => {
           log.info('User saved successfully, mongo ID: ', result);
-          return 'User saved successfully';
+          return this.generateLoginPayload(result.email, result);
         })
         .catch(error => {
           log.error('ERROR FROM THE DATABASE:', error.message);
@@ -54,6 +47,23 @@ class LoginService {
     }
 
     return Promise.reject(result.message);
+  }
+
+  generateLoginPayload(email, result) {
+    let claims = {
+      iss: 'dublins-node-ws',
+      firstName: result.firstName,
+      lastName: result.lastName,
+      handle: result.handle,
+      email: email,
+    };
+    return {
+      firstName: result.firstName,
+      lastName: result.lastName,
+      handle: result.handle,
+      email: result.email,
+      token: jsonwebtoken.sign(claims, process.env.SECRET_KEY),
+    };
   }
 
   validateSignupPayload(signupUser) {

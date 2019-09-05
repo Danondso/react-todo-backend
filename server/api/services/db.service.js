@@ -92,7 +92,7 @@ export class DoerRepository {
       .save()
       .then(result => {
         log.info('User was saved! ', result._id);
-        return result._id;
+        return result;
       })
       .catch(error => {
         log.error('Error occurred while saving a user: ', error);

@@ -13,10 +13,11 @@ export class LoginController {
       .then(r => {
         res
           .status(200)
-          .header('user-token', r)
+          .json(r)
           .end();
       })
       .catch(error => {
+        console.log(error);
         res
           .status(403)
           .json({
@@ -35,10 +36,8 @@ export class LoginController {
     LoginService.signup(req.body)
       .then(success => {
         res
-          .status(201)
-          .json({
-            message: success,
-          })
+          .status(200)
+          .json(success)
           .end();
       })
       .catch(error => {
