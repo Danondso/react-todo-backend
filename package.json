@@ -24,7 +24,8 @@
     "mongoose": "^5.6.13",
     "nyc": "^14.0.0",
     "pino": "^5.13.2",
-    "swagger-express-middleware": "^2.0.3"
+    "swagger-ui-express": "^4.0.7",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

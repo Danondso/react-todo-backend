@@ -1,188 +1,194 @@
-swagger: "2.0"
+openapi: 3.0.2
 info:
   version: 1.0.0
   title: doer-backend
-  description: API for backend todoist clone. 
-basePath: /api/v1
+  description: API for backend todoist clone.
 tags:
   - name: Examples
     description: Simple example endpoints
   - name: Specification
     description: The swagger API specification
-
-consumes:
-  - application/json
-produces:
-  - application/json
-
-securityDefinitions:
-  BasicAuth: 
-    type: basic
-
-definitions:
-  User:
-    type: object
-    title: user
-    required:
-      - firstName
-      - lastName
-      - handle
-      - email
-      - password
-    properties:
-      firstName:
-        type: string
-        example: Johnny
-      lastName:
-        type: string
-        example: Test
-      handle:
-        type: string
-        example: TopJohann28
-      email:
-        type: string
-        example: someuser@example.com
-      password:
-        type: string
-        example: testPassword (don't actually use this please)
-  Login:
-    type: object
-    title: login
-    required:
-      - firstName
-      - lastName
-      - handle
-      - email
-      - token
-    properties:
-      firstName:
-        type: string
-        example: Johnny
-      lastName:
-        type: string
-        example: Test
-      handle:
-        type: string
-        example: TopJohann28
-      email:
-        type: string
-        example: someuser@example.com
-      token:
-        type: string
-        example: JWT token
-        description: JWT token
-  Task:
-    type: object
-    title: task
-    required:
-      - email
-      - text
-    properties:
-      project:
-        type: string
-        example: Chores
-      email:
-        type: string
-        example: sample.user@something.com
-      text:
-        type: string
-        example: Do dishes. 
-
 paths:
   /login:
     post:
       tags:
-        - Login 
+        - Login
       description: login into the todo API
       security:
-        - BasicAuth: []
-      responses: 
-        200:
+        - BasicAuth:
+            []
+      responses:
+        "200":
           description: user successfully logged in
-          schema:
-            $ref: '#/definitions/Login'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
   /signup:
     post:
       tags:
         - SignIn
       description: sign user into todo app
-
-      parameters:
-        - in: body 
-          name: user
-          description: The user signing up
-          schema:
-            $ref: '#/definitions/User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        description: The user signing up
       responses:
-        200:
+        "200":
           description: user signed up
-          schema:
-            $ref: '#/definitions/Login'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
   /task:
     post:
       tags:
         - Task
       description: save task
-      parameters:
-        - in: body 
-          name: task
-          description: The task to be saved
-          schema:
-            $ref: '#/definitions/Task'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Task"
+        description: The task to be saved
       responses:
-        200:
-          description: Sucessfully posted task. 
-          schema:
-            $ref: '#/definitions/Task'
-        400:
+        "200":
+          description: Sucessfully posted task.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "400":
           description: Task body was empty.
-        500:
-          description: Error occured while posting data. 
-  /task/{id}:
+        "500":
+          description: Error occured while posting data.
+  "/task/{id}":
     parameters:
-    - in: path
-      name: id
-      description: id of task.
-      required: true
-      type: string
+      - in: path
+        name: id
+        description: id of task.
+        required: true
+        schema:
+          type: string
     delete:
       tags:
         - Task
-      description: Deletes task from data store. 
+      description: Deletes task from data store.
       responses:
-        204:
-          description: Task deleted.    
+        "204":
+          description: Task deleted.
     put:
       tags:
         - Task
-      description: Update data store task. 
-      parameters:
-        - in: body 
-          name: task
-          description: The task to be saved
-          required: true
-          schema:
-            $ref: '#/definitions/Task'
+      description: Update data store task.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Task"
+        description: The task to be saved
+        required: true
       responses:
-        204:
+        "204":
           description: Task updated.
-  /{email}/tasks:
+  "/{email}/tasks":
     parameters:
       - in: path
         name: email
         description: Email of user whose tasks are to be retrieved.
         required: true
-        type: string
+        schema:
+          type: string
     get:
       tags:
         - Tasks
       responses:
-        200:
+        "200":
           description: OK
   /spec:
     get:
       tags:
         - Specification
       responses:
-        200:
+        "200":
           description: Return the API specification
+servers:
+  - url: http://localhost:3000/api/v1
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    OpenId:
+      type: openIdConnect
+      openIdConnectUrl: https://dev-769052.okta.com
+  schemas:
+    User:
+      type: object
+      title: user
+      required:
+        - firstName
+        - lastName
+        - handle
+        - email
+        - password
+      properties:
+        firstName:
+          type: string
+          example: Johnny
+        lastName:
+          type: string
+          example: Test
+        handle:
+          type: string
+          example: TopJohann28
+        email:
+          type: string
+          example: someuser@example.com
+        password:
+          type: string
+          example: testPassword (don't actually use this please)
+    Login:
+      type: object
+      title: login
+      required:
+        - firstName
+        - lastName
+        - handle
+        - email
+        - token
+      properties:
+        firstName:
+          type: string
+          example: Johnny
+        lastName:
+          type: string
+          example: Test
+        handle:
+          type: string
+          example: TopJohann28
+        email:
+          type: string
+          example: someuser@example.com
+        token:
+          type: string
+          example: JWT token
+          description: JWT token
+    Task:
+      type: object
+      title: task
+      required:
+        - email
+        - text
+      properties:
+        project:
+          type: string
+          example: Chores
+        email:
+          type: string
+          example: sample.user@something.com
+        text:
+          type: string
+          example: Do dishes.

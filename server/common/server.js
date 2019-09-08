@@ -4,9 +4,13 @@ import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import * as os from 'os';
 import cookieParser from 'cookie-parser';
-import swaggerify from './swagger';
 import l from './logger';
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
+import loginRouter from '../api/login/login.router';
+import taskRouter from '../api/tasks/task.router';
 
+const swaggerDocument = YAML.load('server/common/swagger/Api.yaml');
 const app = new Express();
 
 export default class ExpressServer {
@@ -22,11 +26,10 @@ export default class ExpressServer {
     );
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(Express.static(`${root}/public`));
-  }
 
-  router(routes) {
-    swaggerify(app, routes);
-    return this;
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use('/api/v1/', loginRouter);
+    app.use('/api/v1/', taskRouter);
   }
 
   listen(port = process.env.PORT) {
