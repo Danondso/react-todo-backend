@@ -4,46 +4,15 @@ info:
   title: doer-backend
   description: API for todoist clone.
 tags:
-  - name: Specification
+  - name: Task
     description: The swagger API specification
 paths:
-  /login:
-    post:
-      tags:
-        - Login
-      description: login into the todo API
-      security:
-        - BasicAuth:
-            []
-      responses:
-        "200":
-          description: user successfully logged in
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Login"
-  /signup:
-    post:
-      tags:
-        - SignIn
-      description: sign user into todo app
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
-        description: The user signing up
-      responses:
-        "200":
-          description: user signed up
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Login"
   /task:
     post:
       tags:
         - Task
+      security:
+        - Oauth2: []
       description: save task
       requestBody:
         content:
@@ -71,6 +40,8 @@ paths:
         schema:
           type: string
     delete:
+      security:
+        - Oauth2: []
       tags:
         - Task
       description: Deletes task from data store.
@@ -81,6 +52,8 @@ paths:
       tags:
         - Task
       description: Update data store task.
+      security:
+        - Oauth2: []
       requestBody:
         content:
           application/json:
@@ -102,27 +75,27 @@ paths:
     get:
       tags:
         - Tasks
+      security:
+        - Oauth2: []
       responses:
         "200":
           description: OK
-  /spec:
-    get:
-      tags:
-        - Specification
-      responses:
-        "200":
-          description: Return the API specification
 servers:
   - url: http://localhost:3000/api/v1
     description: Local development spec
 components:
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
-    OpenId:
-      type: openIdConnect
-      openIdConnectUrl: https://dev-769052.okta.com
+    Oauth2:
+      type: oauth2
+      description: This API uses OAuth2 with the authorizationCode grant flow. 
+      flows: 
+        implicit:
+          authorizationUrl: https://dev-769052.okta.com/oauth2/default/v1/authorize
+        authorizationCode:
+          authorizationUrl: https://dev-769052.okta.com/oauth2/default/v1/authorize
+          tokenUrl: https://dev-769052.okta.com/oauth2/default/v1/token
+        password:
+          tokenUrl: https://dev-769052.okta.com/oauth2/default/v1/token
   schemas:
     User:
       type: object

@@ -9,6 +9,7 @@ import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import loginRouter from '../api/login/login.router';
 import taskRouter from '../api/tasks/task.router';
+import cors from 'cors';
 
 const swaggerDocument = YAML.load('server/common/swagger/Api.yaml');
 const app = new Express();
@@ -26,7 +27,7 @@ export default class ExpressServer {
     );
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(Express.static(`${root}/public`));
-
+    app.use(cors()); //TODO set cors options here
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use('/api/v1/', loginRouter);
     app.use('/api/v1/', taskRouter);
