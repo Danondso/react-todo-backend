@@ -2,10 +2,8 @@ openapi: 3.0.2
 info:
   version: 1.0.0
   title: doer-backend
-  description: API for backend todoist clone.
+  description: API for todoist clone.
 tags:
-  - name: Examples
-    description: Simple example endpoints
   - name: Specification
     description: The swagger API specification
 paths:
@@ -116,6 +114,7 @@ paths:
           description: Return the API specification
 servers:
   - url: http://localhost:3000/api/v1
+    description: Local development spec
 components:
   securitySchemes:
     BasicAuth:
