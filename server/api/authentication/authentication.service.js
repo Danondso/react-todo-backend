@@ -17,7 +17,7 @@ const oktaJwtVerifier = new OktaJwtVerifier({
 export function authenticationRequired(req, res, next) {
   const authHeader = req.headers['authorization'] || '';
   const match = authHeader.match(/Bearer (.+)/);
-  log.info('CHECKING AUTH', authHeader);
+  log.debug('Checking authentication for token:', authHeader);
 
   if (!match) {
     res.status(401);
@@ -27,13 +27,13 @@ export function authenticationRequired(req, res, next) {
   const accessToken = match[1];
 
   return oktaJwtVerifier
-    .verifyAccessToken(accessToken)
+    .verifyAccessToken(accessToken, 'api://default')
     .then(jwt => {
       req.jwt = jwt;
       next();
     })
     .catch(error => {
-      log.error('Error occures while verifying access token', error);
+      log.error('Error occurred while verifying access token:', error.message);
       return res.status(401).end();
     });
 }
