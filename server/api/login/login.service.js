@@ -1,29 +1,10 @@
 import DoerRepository from '../services/db.service';
 import bcrypt from 'bcryptjs';
 import logger from 'pino';
-import jsonwebtoken from 'jsonwebtoken';
 ('use strict');
 
 var log = logger();
 class LoginService {
-  login(email, password) {
-    log.info('EMAIL:', email);
-    return DoerRepository.getUserByEmail(email)
-      .then(result => {
-        log.debug('Result from getUserByEmail: ', result);
-        let hashedPass = bcrypt.hashSync(password, result.salt);
-        if (this.comparePassword(hashedPass, result.password)) {
-          log.info('Generating jwt token for ', email);
-          return this.generateLoginPayload(email, result);
-        } else {
-          return 'Password was invalid for user: ', email;
-        }
-      })
-      .catch(error => {
-        throw error;
-      });
-  }
-
   signup(signupUser) {
     let result = this.validateSignupPayload(signupUser);
     if (result === true) {
@@ -47,23 +28,6 @@ class LoginService {
     }
 
     return Promise.reject(result.message);
-  }
-
-  generateLoginPayload(email, result) {
-    let claims = {
-      iss: 'dublins-node-ws',
-      firstName: result.firstName,
-      lastName: result.lastName,
-      handle: result.handle,
-      email: email,
-    };
-    return {
-      firstName: result.firstName,
-      lastName: result.lastName,
-      handle: result.handle,
-      email: result.email,
-      token: jsonwebtoken.sign(claims, process.env.SECRET_KEY),
-    };
   }
 
   validateSignupPayload(signupUser) {

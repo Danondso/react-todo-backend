@@ -11,6 +11,4 @@ var corsOptions = {
 
 export default express
   .Router()
-  .options('/login', cors())
-  .post('/login', cors(corsOptions), loginController.login)
   .post('/signup', cors(corsOptions), loginController.signup);

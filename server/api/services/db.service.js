@@ -70,20 +70,6 @@ export class DoerRepository {
       });
   }
 
-  getUserByEmail(inputEmail) {
-    log.info('Retrieving user info for email: ', inputEmail);
-    return UserModel.findOne({ email: inputEmail })
-      .then(result => {
-        log.info('Successfully retrieved user info for email', inputEmail);
-        log.debug('Result:', result);
-        return result;
-      })
-      .catch(error => {
-        log.error('An error occurred while retrieving user.', error);
-        throw new Error(error);
-      });
-  }
-
   saveUser(signUpUser) {
     log.debug('Creating user', signUpUser);
     let user = this.createUser(signUpUser); //TODO log info here
