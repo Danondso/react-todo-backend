@@ -6,7 +6,7 @@ const oktaJwtVerifier = new OktaJwtVerifier({
   clientId: process.env.SPA_CLIENT_ID,
   issuer: process.env.ISSUER,
   assertClaims: {
-    aud: 'api://default',
+    aud: process.env.AUDIENCE,
     cid: process.env.SPA_CLIENT_ID,
   },
   testing: {
@@ -15,7 +15,7 @@ const oktaJwtVerifier = new OktaJwtVerifier({
 });
 
 export function authenticationRequired(req, res, next) {
-  const authHeader = req.headers['authorization'] || '';
+  const authHeader = req.headers.authorization || '';
   const match = authHeader.match(/Bearer (.+)/);
   log.debug('Checking authentication for token:', authHeader);
 
@@ -27,7 +27,7 @@ export function authenticationRequired(req, res, next) {
   const accessToken = match[1];
 
   return oktaJwtVerifier
-    .verifyAccessToken(accessToken, 'api://default')
+    .verifyAccessToken(accessToken, process.env.AUDIENCE)
     .then(jwt => {
       req.jwt = jwt;
       next();

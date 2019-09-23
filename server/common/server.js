@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import l from './logger';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
-import loginRouter from '../api/login/login.router';
 import taskRouter from '../api/tasks/task.router';
 import cors from 'cors';
 
@@ -36,7 +35,6 @@ export default class ExpressServer {
     app.use(Express.static(`${root}/public`));
     app.use(cors(corsOptions));
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    app.use('/api/v1/', loginRouter);
     app.use('/api/v1/', taskRouter);
   }
 
