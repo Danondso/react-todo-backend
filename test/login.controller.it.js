@@ -3,6 +3,8 @@ import Server from '../server';
 import logger from 'pino';
 import assert from 'assert';
 var log = logger();
+
+//TODO rework these tests to be used for tasks.
 describe('Login controller test', function() {
   describe('Signup Endpoints Tests', function() {
     it('Should return 200 on happy path user signup', () => {
