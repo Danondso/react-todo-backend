@@ -11,7 +11,7 @@ describe('Task IT Tests', function() {
   describe('Task Save Endpoint Tests', function() {
     it('Should return 200 with result on task save.', () => {
       request(Server)
-        .post('/api/v1/task')
+        .post('/api/v1/tasks')
         .set('Authorization', accessToken)
         .set('Content-Type', 'application/json')
         .send({
@@ -30,7 +30,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 with an empty payload', () => {
       request(Server)
-        .post('/api/v1/task')
+        .post('/api/v1/tasks')
         .set('Authorization', accessToken)
         .send({})
         .end(function(err, res) {
@@ -44,7 +44,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 with a null payload', () => {
       request(Server)
-        .post('/api/v1/task')
+        .post('/api/v1/tasks')
         .set('Authorization', accessToken)
         .send(null)
         .end(function(err, res) {
@@ -60,7 +60,7 @@ describe('Task IT Tests', function() {
   describe('Get Tasks Endpoint Tests', function() {
     it('Should return 200 when task retrieval succeeds.', () => {
       request(Server)
-        .get('/api/v1/dublin.smith@gmail.com/tasks')
+        .get('/api/v1/tasks/dublin.smith@gmail.com')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -73,7 +73,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 500 when task retrieval fails.', () => {
       request(Server)
-        .get('/api/v1/geafadfa/tasks')
+        .get('/api/v1/tasks/geafadfa')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -87,7 +87,7 @@ describe('Task IT Tests', function() {
   describe('Update Task Endpoint Tests', function() {
     it('Should return 204 when a task is updated successfully.', () => {
       request(Server)
-        .put('/api/v1/task/aVeryUniqueId')
+        .put('/api/v1/tasks/aVeryUniqueId')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -99,7 +99,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 when the task id is null', () => {
       request(Server)
-        .put('/api/v1/task/null')
+        .put('/api/v1/tasks/null')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -111,7 +111,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 when the task id is undefined', () => {
       request(Server)
-        .put('/api/v1/task/undefined')
+        .put('/api/v1/tasks/undefined')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -123,7 +123,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 500 when a task is not updated successfully.', () => {
       request(Server)
-        .put('/api/v1/task/aVeryUniqueId')
+        .put('/api/v1/tasks/aVeryUniqueId')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -137,7 +137,7 @@ describe('Task IT Tests', function() {
   describe('Delete Task Endpoint Tests', function() {
     it('Should return 204 when a task is deleted successfully.', () => {
       request(Server)
-        .delete('/api/v1/task/aVeryUniqueId')
+        .delete('/api/v1/tasks/aVeryUniqueId')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -149,7 +149,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 when the task id is null', () => {
       request(Server)
-        .delete('/api/v1/task/null')
+        .delete('/api/v1/tasks/null')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -161,7 +161,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 400 when the task id is undefined', () => {
       request(Server)
-        .delete('/api/v1/task/undefined')
+        .delete('/api/v1/tasks/undefined')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
@@ -173,7 +173,7 @@ describe('Task IT Tests', function() {
 
     it('Should return 500 when a task is not deleted successfully.', () => {
       request(Server)
-        .delete('/api/v1/task/aVeryUniqueId')
+        .delete('/api/v1/tasks/aVeryUniqueId')
         .set('Authorization', accessToken)
         .end(function(err, res) {
           if (err) {
