@@ -1,10 +1,10 @@
 {
-  "name": "react-todo-backend",
+  "name": "doer-backend",
   "version": "1.0.0",
-  "description": "API for backnd todoist clone. ",
+  "description": "Backend API for backend todo list app.",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "babel-node --config .nodemonrc.json | pino-pretty",
     "compile": "babel server --out-dir dist --delete-dir-on-start --source-maps inline --copy-files",
     "dev": "nodemon server --exec babel-node --config .nodemonrc.json | pino-pretty",
     "dev:debug": "nodemon server --exec babel-node --config .nodemonrc.json --inspect | pino-pretty",

@@ -10,7 +10,7 @@ export class DoerRepository {
       useNewUrlParser: true,
       useCreateIndex: true,
     });
-    mongoose.Promise = global.Promise; //Why set this up?
+    mongoose.Promise = global.Promise;
   }
 
   insertTask(newTask) {
