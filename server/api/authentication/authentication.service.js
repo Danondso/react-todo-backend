@@ -31,7 +31,6 @@ export function authenticationRequired(req, res, next) {
   }
 
   const accessToken = match[1];
-  log.info(accessToken);
 
   return oktaJwtVerifier
     .verifyAccessToken(accessToken, process.env.AUDIENCE)
