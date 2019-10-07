@@ -8,6 +8,12 @@ const oktaJwtVerifier = new OktaJwtVerifier({
   assertClaims: {
     aud: process.env.AUDIENCE,
     cid: process.env.SPA_CLIENT_ID,
+    'scp.includes': [
+      'tasks:update',
+      'tasks:create',
+      'tasks:delete',
+      'tasks:read',
+    ],
   },
   testing: {
     disableHttpsCheck: process.env.OKTA_TESTING_DISABLEHTTPSCHECK,
@@ -25,6 +31,7 @@ export function authenticationRequired(req, res, next) {
   }
 
   const accessToken = match[1];
+  log.info(accessToken);
 
   return oktaJwtVerifier
     .verifyAccessToken(accessToken, process.env.AUDIENCE)
