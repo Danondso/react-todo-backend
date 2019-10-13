@@ -14,9 +14,9 @@ const swaggerDocument = YAML.load('server/common/swagger/Api.yaml');
 const app = new Express();
 
 var corsOptions = {
-  origin: '*',
-  methods: 'POST, GET, PUT, DELETE',
-  allowedHeaders: 'Authorization, Content-Type',
+  origin: process.env.CORS_ALLOWED_ORIGIN,
+  methods: process.env.CORS_METHODS,
+  allowedHeaders: process.env.CORS_ALLOWED_HEADERS,
   credentials: true,
 };
 
