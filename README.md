@@ -9,6 +9,7 @@ API for [doer](https://github.com/Danondso/doer), base implementation generated 
 Make sure you have the following setup:
 
 - A mongodb instance
+- [Okta Dev Account](https://developer.okta.com/signup/)
 - Okta Authorization Server (I'm sure this can be changed out but the service leverages libraries specific to okta)
 - Okta SPA Client ID
 
